@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UrlModule } from './url/url.module';
-import dbConfig from './configs/config.db';
+import { createDbConfig } from './configs/config.db';
 
 @Module({
   imports: [
@@ -14,9 +14,19 @@ import dbConfig from './configs/config.db';
       isGlobal: true,
     }),
     UrlModule,
-    TypeOrmModule.forRoot(dbConfig),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: createDbConfig,
+      inject: [ConfigService],
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}
+
+console.log('DB Config:', {
+  host: process.env.DATABASE_HOST,
+  user: process.env.DATABASE_USER,
+  pass: process.env.DATABASE_PASSWORD,
+});
