@@ -10,7 +10,7 @@ import dbConfig from './configs/config.db';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: '.env.development',
+      envFilePath: '.env.development.local',
       isGlobal: true,
     }),
     UrlModule,
