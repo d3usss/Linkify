@@ -1,24 +1,20 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UrlModule } from './url/url.module';
+import dbConfig from './configs/config.db';
 
 @Module({
   imports: [
-    UrlModule,
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'dev',
-      password: 'dev',
-      database: 'linkify',
-      entities: [],
-      synchronize: true,
-      dropSchema: true,
+    ConfigModule.forRoot({
+      envFilePath: '.env.development',
+      isGlobal: true,
     }),
+    UrlModule,
+    TypeOrmModule.forRoot(dbConfig),
   ],
   controllers: [AppController],
   providers: [AppService],
