@@ -24,9 +24,3 @@ import { createDbConfig } from './configs/config.db';
   providers: [AppService],
 })
 export class AppModule {}
-
-console.log('DB Config:', {
-  host: process.env.DATABASE_HOST,
-  user: process.env.DATABASE_USER,
-  pass: process.env.DATABASE_PASSWORD,
-});
